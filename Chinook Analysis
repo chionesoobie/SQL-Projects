@@ -36,8 +36,24 @@ ON cust.SupportRepID = emp.EmployeeID
 JOIN chinook.invoices inv
 ON inv.InvoiceID =  emp.EmployeeID
 
-6) -- How many Invoices were there in 2009?
+6) -- What are the total sales for 2009?
+SELECT SUM(Total) AS 'Total_2009_Sales'
+FROM chinook.invoices
+WHERE InvoiceDate LIKE '2009%'
+
+7) -- How many Invoices were there in 2009?
 
 SELECT COUNT(InvoiceDate) AS "2009_Invoices"
 FROM chinook.invoices
 WHERE InvoiceDate LIKE '2009%';
+
+8) -- Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+
+SELECT track.Name AS track_name, album.Title AS album_title, media.Name AS media_type, genres.Name AS genre_name 
+FROM chinook.tracks track
+JOIN chinook.media_types media
+ON track.MediaTypeId = media.MediaTypeId
+OUTER JOIN chinook.genres genres
+ON track.GenreId = genres.GenreId
+OUTER JOIN chinook.albums album
+ON track.AlbumId = album.AlbumId
