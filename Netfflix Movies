@@ -61,9 +61,11 @@ VALUES
 
 
 
-
-
 1) -- How many movie titles are there in the database? (movies only, not tv shows)
+This allows for content analysis to understand movie volume, and in the longrun can track changes over time 
+to understand trends in movie adding and removal.
+
+In this query, I calculated the cnumber of titles from the table, filtering it down so it would only count movies and not tv shows. 
 
 SELECT COUNT(title) FROM "netflix_titles_info"
 WHERE type = 'Movie'
@@ -72,6 +74,12 @@ Answer= 8
 
 
 2) -- Who was the Director for the movie The Starling?
+
+This could be helpful for businesses for marketing efforts by highlighting popular directors, and generally understanding creative efforts
+behind movies. 
+
+In this query, I selected the title and director from separate tables, and joined them based on their matching identifying keys. I then 
+filtered it to show the one and only title, "The Starling".
 
 SELECT titles.title, people.director
 FROM netflix_titles_info titles
@@ -85,6 +93,12 @@ Answer= 	Theodore Melfi
 
 3) -- What is the oldest movie in the database and what year was it made?
 
+This could help businesses by segmenting movies based on production year for their customers and for potential historical campaigns, 
+and give insights into content date range in terms of release years. 
+
+In this query, I selected the title and release year from the table, then filtered it down to include only Movies. Next, 
+I ordered it by release year to ensure that I see the earliest movie first, and finally I limited my results to 1 to only show the top
+result.
 
 SELECT title, release_year
 FROM "netflix_titles_info"
