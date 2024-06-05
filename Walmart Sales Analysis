@@ -1,0 +1,39 @@
+For this project, I used the Walmart E-commerce Product Dataset on Kaggle, which can be found here: https://www.kaggle.com/datasets/hikageshinomori/walmart-e-commerce-product-data
+
+-- 1) What is the cheapest beverage that has an average rating over 3 and at least 100 reviews?
+
+This query shows the title, price, average rating, and review count of the highest-rated beverage with at least 100 reviews from the Sales.walmart table, sorted by price in ascending order.
+
+For businesses, this information is helpful because it can:
+
+Identify popular products, optimize pricing, and enhance marketing.
+
+First, I focus on 'Beverages' to narrow down my search to relevant products. Then, I make sure I'm only looking at items with 100 or more reviews to get reliable feedback. 
+I filter out any products with an average rating below 3 and remove any entries with missing or invalid ratings to keep my data clean. 
+Next, I sort these products by price from lowest to highest and pick the cheapest one that meets all the criteria, helping to find an affordable and popular beverage.
+
+
+SELECT title, price, avg_rating, reviews_count
+FROM Sales.walmart 
+WHERE sub_category_1 = 'Beverages' 
+  AND reviews_count >= 100
+  AND avg_rating >= 3
+  AND avg_rating IS NOT NULL
+  AND avg_rating <> ''
+  AND avg_rating <> ' '
+  ORDER BY price ASC
+  LIMIT 1
+
+-- 2) Identify the top 10 most expensive items in stock.
+
+This helps business because by identifying high-priced items, they can gain insights into premium products that can potentially drive higher revenue.
+
+In this query, I filter out null or empty price values, trim any leading or trailing whitespace, and then convert prices to a numeric type for accurate sorting. 
+Then, I orderthe items by price in descending order and limit the results to the top 10 most expensive products, to highlight the top items in the inventory.
+
+SELECT title, price
+FROM Sales.walmart
+WHERE price IS NOT NULL
+  AND TRIM(price) <> ''
+ORDER BY CAST(TRIM(price) AS DECIMAL(10, 2)) DESC
+LIMIT 10
