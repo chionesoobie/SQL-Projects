@@ -1,4 +1,4 @@
-For this project, I used the Walmart E-commerce Product Dataset on Kaggle, which can be found here: https://www.kaggle.com/datasets/hikageshinomori/walmart-e-commerce-product-data
+## For this project, I used the Walmart E-commerce Product Dataset on Kaggle, which can be found here: https://www.kaggle.com/datasets/hikageshinomori/walmart-e-commerce-product-data
 
 -- 1) What is the cheapest beverage that has an average rating over 3 and at least 100 reviews?
 
@@ -29,7 +29,7 @@ WHERE sub_category_1 = 'Beverages'
 This helps business because by identifying high-priced items, they can gain insights into premium products that can potentially drive higher revenue.
 
 In this query, I filter out null or empty price values, trim any leading or trailing whitespace, and then convert prices to a numeric type for accurate sorting. 
-Then, I orderthe items by price in descending order and limit the results to the top 10 most expensive products, to highlight the top items in the inventory.
+Then, I order the items by price in descending order and limit the results to the top 10 most expensive products, to highlight the top items in the inventory.
 
 SELECT title, price
 FROM Sales.walmart
@@ -37,3 +37,25 @@ WHERE price IS NOT NULL
   AND TRIM(price) <> ''
 ORDER BY CAST(TRIM(price) AS DECIMAL(10, 2)) DESC
 LIMIT 10
+
+-- 3) What is the average price of an item in the "Bath & Body" category?
+This helps businesses by setting competitive prices for new or existing products and allows them to make informed decisions on stocking products based on average prices.
+
+In this query, I calculated the average price of the items, aliasing it so that it would be easier to read, and then 
+filtered it to only include items that were in the category "Bath & Body". 
+
+SELECT AVG(price) AS body_product_average_price
+FROM Sales.walmart
+WHERE sub_category_1 = 'Bath & Body'
+
+-- 4) What are the SKUs, prices, and names of all the razor products sorted from cheapest to most expensive?
+This helps businesses manage stock and inventory, as well as identify pricing patterns for potential adjustment.
+
+In this query, I selected the title, price, and sku number. Then I used the "LIKE" function to filter the results to anything containing the word "razor". 
+Finally, I ordered it by ascending price to see the cheapest items first and the most expensive items last.
+
+SELECT DISTINCT title, price, sku
+FROM Sales.walmart
+WHERE title LIKE "%razor%"
+ORDER BY price
+
