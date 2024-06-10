@@ -2,29 +2,56 @@
 Link to sample database: https://www.dropbox.com/s/cvsasmtr8syq2c2/BIT_DB?e=1&dl=0
 
 1) -- How many orders were placed in January?
+This is helpful to businesses because it provides insights into stocking and inventory and allows us to draw conclusion about item
+popularity.
+
+In this query, I counted the number of Order IDs from the January sales table. I used LENGTH to ensure that it pulled correct identifiers, that specifically
+have 6 characters. I then added another filter to remove identifiers that are not actual ID numbers and instead show the words 'Order ID' .
+
 SELECT COUNT(orderid)
 FROM BIT_DB.JanSales
-WHERE length(orderid) = 6
+WHERE LENGTH(orderid) = 6
 AND orderid <> 'Order ID'
 
 2) -- How many of those were iPhones?
+This follow up query is helpful to businesses because it allows us to specifically target a popular item and gain insights on inventory, popularity,
+and also contributes to trend evaluation by month.
+
+In this query, I counted the number of Order IDs from the January sales table. I used LENGTH to ensure that it pulled correct identifiers, that specifically
+have 6 characters. I then added another filter to remove identifiers that are not actual ID numbers and instead show the words 'Order ID'.
+Last, I added a final filter to show iPhone products only.
+
 
 SELECT COUNT(orderid)
 FROM BIT_DB.JanSales
-WHERE length(orderid) = 6
+WHERE LENGTH(orderid) = 6
 AND orderid <> 'Order ID'
 AND Product = 'iPhone'
 
+
 3) -- Select the customer account numbers for all the orders that were placed in February.
+This is helpful to businesses because it provides insights into trend evaluation, which can be used to tailor marketing efforts, and also
+helps us identify unique customer purchasing behaviors. 
+
+In this query, I selected the account numbers from the aliased customers table, using the DISTINCT key to ensure that it shows unique entries.
+I then joined this with the February sales table on the condition of matching Order IDs, and then filtered my results down to to ensure that
+null/incorrect results would not show as the Order ID.
 
 SELECT distinct acctnum
 FROM BIT_DB.customers cust
 INNER JOIN BIT_DB.FebSales Feb
 ON cust.order_id=FEB.orderid
-WHERE length(orderid) = 6
+WHERE LENGTH(orderid) = 6
 AND orderid <> 'Order ID'
 
+
+
 4) -- Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+This analysis provides geographic insights, as well as insights into purchasing behaviors and product performance. Businesses can use this
+to understand their inventory and focus on the highest selling products.
+
+In this query, I selected the product and location, and performed an aggregated calculation to see revnue and subsequently the total quality
+for each. I then filtered it down to show results from an exact location, and grouped the results by product.
 
 SELECT product, location, SUM(price)*quantity AS revenue, SUM(quantity) AS total
 FROM  BIT_DB.FebSales
@@ -33,6 +60,11 @@ GROUP BY product
 
 
 5) -- How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?
+This query helps us understand revenue per order and unique customer insights such as purchasing behavior.
+
+I began by counting the unique amount of account numbers, and performed a calculation to see the average of the revnues. I selected
+this from the February sales table and performed a join to the customers table on the condition of matching order IDs. I then filtered
+these results to show orders containing more than 2 products, and finished by cleaning the data to exclude nulls/incorrect values.
 
 SELECT
 count(distinct cust.acctnum),
@@ -45,14 +77,13 @@ AND length(orderid) = 6
 AND orderid <> 'Order ID' 
 
 
-6) -- List all the products sold in Los Angeles in February, and include how many of each were sold.
+6) -- How many of each type of headphone were sold in February?
+This query helps us to understand insights on headphones and their highest and lowest selling products, which is crucial for inventory management
+and demand forecasting.
 
-SELECT Product, SUM(quantity)
-FROM BIT_DB.FebSales
-WHERE location like '%Los Angeles%'
-GROUP BY Product
-
-7) -- How many of each type of headphone were sold in February?
+To begin, I selected an aggregated sum of the quantities of products, as well as the product name, from the February sales table. I then used
+the LIKE function to include any and all results containing the word "headphones". I ensured data integrity by filtering out incorrect/invalid
+order IDs, and grouped it by product to show the previously aggregated  sum by each individual product.
 
 SELECT SUM(quantity), product
 FROM BIT_DB.FebSales
@@ -61,7 +92,14 @@ AND LENGTH(orderID) = 6
 AND orderID <> 'Order ID'
 GROUP BY product
 
-8) -- What was the average quantity of products purchased per account in February?
+7) -- What was the average quantity of products purchased per account in February?
+
+This helps businesses better understand customer purchasing behavior as well as item popularity, and also contributes to benchmarking
+by time of year. 
+
+In this query, I began by performing a calculation that would divide the total quantity of products by the number of accounts 
+to get the average. I selected this from the February sales table, joining it with the customers table on the condition of matching
+Order IDs. Finally, I ensured data integrity by filtering out nulls/incorrect order IDs to maintain accuracy. 
 
 SELECT SUM(quantity)/COUNT(cust.acctnum)
 FROM BIT_DB.FebSales Feb
@@ -70,11 +108,4 @@ ON FEB.orderid=cust.order_id
 WHERE LENGTH(orderid) = 6 
 AND orderid <> 'Order ID'
 
-9) -- Which product brought in the most revenue in January and how much revenue did it bring in total?
-
-SELECT SUM(price*quantity), product FROM BIT_DB.JanSales
-WHERE product <> 'Product'
-GROUP BY product
-ORDER BY SUM(price*quantity)
-DESC LIMIT 1
 
