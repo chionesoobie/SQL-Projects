@@ -62,13 +62,18 @@ VALUES
     # Analysis:
 
  # 1) Classify each company's tenure as "High", "Mid", and "Low" based on average tenure for all Technology companies and determine which companies have the highest and lowest. 
+For businesses, this is helpful because it provides insights into employee experience and how it relates to company quality integrity, 
+and retention, and allows for calculated intervention to improve career development.
+
+In this query, I used a CASE statement to classify employee tenure into groups of "high", "mid" and "low" based on a range of numbers and
+what is typically accepted by businesses as high and low tenure. I then filtered it to show industries only in technology, and grouped
+it by tenure year to show trends over time.
 
 SELECT company_name, ROUND(avg_employee_tenure, 1) AS tenure_year,
 	CASE WHEN avg_employee_tenure >=5 THEN "High"
 	WHEN avg_employee_tenure >=3 THEN "Mid"
 	WHEN avg_employee_tenure >= 0 THEN "Low"
 	END AS average_tenure
-
 FROM fortune_companies
 WHERE industry = 'Technology'
 GROUP BY tenure_year 
@@ -77,6 +82,12 @@ GROUP BY tenure_year
 
 
 # 2) Which companies have an average revenue of at least 300 million dollars, and what are their revenues?
+This is helpful for businesses because it allows us to see how companies are performing. This data can be used improve on marketing 
+efforts, product quality, and customer satisfaction. 
+
+In this query, I wanted to see the names of companies and their average revenue, and I filtered it down to only include companies with a
+revenue over $300 million using the HAVING clause. I then ordered it to show the greatest average at the top, descending to show the least
+at the bottom. 
 
 SELECT company_name, AVG(revenue) AS avg_revenue
   FROM fortune_companies
@@ -87,7 +98,14 @@ ORDER BY avg_revenue DESC
 # Findings - Walmart has the greatest of the average revenues above 300 million with 523.96 million dollars, whereas Company C has the lowest of the revnues above 300 million with 300.2 million
 
 
+
 # 3) List the Healthcare industry companies that do NOT offer health benefits 
+This is helpful because it provides insights into industry standards and compliance and allows businesses to
+take a look into where they can improve in their benefit packages, which can help with employee retention and satisfaction.
+
+In this query, I selected company names from the fortune companies table and filtered it down to show companies that do NOT offer benefits using
+a boolean marker. Next, I filtered it further to only show results from industries in healthcare.
+
 SELECT company_name
 	FROM fortune_companies
 WHERE healthcare_benefits = 0
