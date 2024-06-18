@@ -1,0 +1,38 @@
+-- 1) What are the top 5 selling games in North America the sports category, as of 2000?
+This can be helpful for businesses because it gives insights into historically top performing games in the Sports niche, and can help with understanding
+consumer preferences in the sport game market. 
+
+In this query,  I selected the name and North American sales from the video game table. I filtered it down to only include games in the genre of "sports", and 
+filtered it even further so it would show games released during or after the year of 2000. Finally, I ordered it by sales in descending order and limited the
+results by 5 to see the top 5 best selling sports games. 
+
+SELECT name, year, na_sales FROM BIT_DB.games
+WHERE genre = 'Sports' 
+AND year >= 2000
+ORDER BY na_sales DESC
+LIMIT 5
+
+--2) Globally, what are the top 5 selling gaming platforms of all time?
+This is useful information because it provides insights onto how well each gaming console has done as a whole, over time. This can allow for prioritizing marketing efforts
+and game developing strategies on proven successfully performing consoles. 
+
+In this query, I selected the plaform and an aggregated sum of the global sales. I then grouped it by platform to show each global sale for each platform.
+Next, I ordered it to show the top selling consoles and limited it to show the top 5. 
+
+SELECT DISTINCT platform, SUM(global_sales) FROM BIT_DB.games
+GROUP BY platform
+ORDER BY SUM(global_sales) DESC
+LIMIT 5
+
+--3) Which Nintendo game is the most popular amongst the "shooter" genre?
+This can specifically help Nintendo better understand their consumer preferences amongst the "shooter"genre, tailoring their marketing 
+and managing their inventory more  effectively.
+
+In this query,  I selected the names from the video game table, then filtered it to only show games that fell into the genre of "shooter". I then filtered it further 
+to show games produced by Nintendo, then ordered it by sales in descending order to see the top selling Nintendo shooter games. 
+
+SELECT name FROM BIT_DB.games
+WHERE genre = 'Shooter'
+AND publisher = 'Nintendo'
+ORDER BY na_sales DESC
+
